@@ -4,7 +4,6 @@ I'll provide an overview of each step, and then we can move on to the coding pha
 
 ** Project Setup and Environment Configuration **
 
-
 ** Set up a Python virtual environment **
 Install necessary libraries (e.g., ast for parsing, nltk for NLP)
 Create project structure and main files
@@ -48,3 +47,4 @@ Develop algorithms to enhance explanation readability and naturalness
 Create the main explanation generation function
 Implement logic to combine AST analysis, templates, and NLP processing
 Develop a system to generate coherent multi-line explanations
+

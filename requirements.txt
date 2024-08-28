@@ -1,2 +1,5 @@
 astroid==2.9.3
 nltk==3.7
+flask==2.0.1
+scikit-learn==0.24.2
+joblib==1.0.1
