@@ -40,7 +40,7 @@ def process_text(text: str) -> str:
     # Join the processed tokens back into a string
     return ' '.join(processed_tokens)
 
-# Example usage
+
 if __name__ == "__main__":
     sample_text = "hello world. how are you? this is a test."
     processed_text = process_text(sample_text)
