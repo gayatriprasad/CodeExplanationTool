@@ -1,5 +1,13 @@
+"""
+This module generates explanations for Python code structures.
+
+It provides templates for common code constructs and a function to generate
+explanations based on an analysis of the code structure.
+"""
+
 from typing import List, Dict, Any
 
+# Templates for different code constructs
 TEMPLATES = {
     'function': "This code defines a function named '{name}' that takes {arg_count} argument(s): {args}.",
     'class': "This code defines a class named '{name}'.",
@@ -11,6 +19,17 @@ TEMPLATES = {
 }
 
 def generate_explanation(analysis: List[Dict[str, Any]], indent: int = 0) -> str:
+    """
+    Generate a human-readable explanation of code structure based on analysis.
+
+    Args:
+        analysis (List[Dict[str, Any]]): A list of dictionaries containing
+                                         analyzed code structures.
+        indent (int): The current indentation level (default is 0).
+
+    Returns:
+        str: A string containing the generated explanation.
+    """
     explanations = []
     indent_str = "  " * indent
 
