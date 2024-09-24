@@ -1,125 +1,82 @@
-import ast
-from typing import Dict, Any, List
+"""
+This module generates explanations for Python code structures.
 
-class ASTAnalyzer(ast.NodeVisitor):
+It provides templates for common code constructs and a function to generate
+explanations based on an analysis of the code structure.
+"""
+
+from typing import List, Dict, Any
+
+# Templates for different code constructs
+TEMPLATES = {
+    'function': "This code defines a function named '{name}' that takes {arg_count} argument(s): {args}.",
+    'class': "This code defines a class named '{name}'.",
+    'import': "This code imports the module or object '{name}'.",
+    'variable': "This code declares a variable named '{name}'.",
+    'for_loop': "This code starts a for loop.",
+    'while_loop': "This code starts a while loop.",
+    'if_statement': "This code starts an if statement for conditional execution."
+}
+
+
+def generate_explanation(analysis: List[Dict[str, Any]], indent: int = 0) -> str:
     """
-    A class for analyzing Python Abstract Syntax Trees (AST).
+    Generate a human-readable explanation of code structure based on analysis.
 
-    This class visits different nodes in the AST and extracts relevant information
-    about functions, classes, imports, variables, loops, and conditional statements.
-    """
-
-    def __init__(self):
-        self.analysis = []
-        self.current_scope = self.analysis
-
-    def visit_FunctionDef(self, node):
-        """Visit a function definition node."""
-        func_info = {
-            'type': 'function',
-            'name': node.name,
-            'args': [arg.arg for arg in node.args.args],
-            'body': [],
-            'lineno': node.lineno
-        }
-        self._process_scope(func_info)
-
-    def visit_ClassDef(self, node):
-        """Visit a class definition node."""
-        class_info = {
-            'type': 'class',
-            'name': node.name,
-            'body': [],
-            'lineno': node.lineno
-        }
-        self._process_scope(class_info)
-
-    def visit_Import(self, node):
-        """Visit an import node."""
-        for alias in node.names:
-            self.current_scope.append({
-                'type': 'import',
-                'name': alias.name,
-                'lineno': node.lineno
-            })
-
-    def visit_ImportFrom(self, node):
-        """Visit an import from node."""
-        for alias in node.names:
-            self.current_scope.append({
-                'type': 'import',
-                'name': f"{node.module}.{alias.name}",
-                'lineno': node.lineno
-            })
-
-    def visit_Assign(self, node):
-        """Visit an assignment node."""
-        for target in node.targets:
-            if isinstance(target, ast.Name):
-                self.current_scope.append({
-                    'type': 'variable',
-                    'name': target.id,
-                    'lineno': target.lineno
-                })
-        self.generic_visit(node)
-
-    def visit_For(self, node):
-        """Visit a for loop node."""
-        self._process_loop('for_loop', node)
-
-    def visit_While(self, node):
-        """Visit a while loop node."""
-        self._process_loop('while_loop', node)
-
-    def visit_If(self, node):
-        """Visit an if statement node."""
-        if_info = {
-            'type': 'if_statement',
-            'body': [],
-            'lineno': node.lineno
-        }
-        self._process_scope(if_info)
-
-    def _process_scope(self, info):
-        """
-        Process a new scope (function, class, loop, or conditional).
-
-        Args:
-            info (dict): Information about the new scope.
-        """
-        self.current_scope.append(info)
-        previous_scope = self.current_scope
-        self.current_scope = info['body']
-        self.generic_visit(info)
-        self.current_scope = previous_scope
-
-    def _process_loop(self, loop_type, node):
-        """
-        Process a loop node (for or while).
-
-        Args:
-            loop_type (str): Type of the loop ('for_loop' or 'while_loop').
-            node (ast.AST): The loop node to process.
-        """
-        loop_info = {
-            'type': loop_type,
-            'body': [],
-            'lineno': node.lineno
-        }
-        self._process_scope(loop_info)
-
-
-def analyze_ast(tree: ast.AST) -> List[Dict[str, Any]]:
-    """
-    Analyze the given Abstract Syntax Tree.
+    This function recursively processes the analyzed code structures and generates
+    explanations using predefined templates. It handles nested structures by
+    increasing the indentation level for each nested block.
 
     Args:
-        tree (ast.AST): The AST to analyze.
+        analysis (List[Dict[str, Any]]): A list of dictionaries containing
+                                         analyzed code structures.
+        indent (int): The current indentation level (default is 0).
 
     Returns:
-        List[Dict[str, Any]]: A list of dictionaries containing information about
-        the elements in the analyzed code.
+        str: A string containing the generated explanation.
+
+    Example:
+        analysis = [
+            {
+                'type': 'function',
+                'name': 'example_function',
+                'args': ['arg1', 'arg2'],
+                'body': [
+                    {'type': 'variable', 'name': 'x'},
+                    {'type': 'for_loop', 'body': [...]}
+                ]
+            }
+        ]
+        explanation = generate_explanation(analysis)
+        print(explanation)
     """
-    analyzer = ASTAnalyzer()
-    analyzer.visit(tree)
-    return analyzer.analysis
+    explanations = []
+    indent_str = "  " * indent
+
+    for item in analysis:
+        explanation = ""
+        if item['type'] in TEMPLATES:
+            # Generate explanation based on the template
+            if item['type'] == 'function':
+                explanation = TEMPLATES['function'].format(
+                    name=item['name'],
+                    arg_count=len(item['args']),
+                    args=', '.join(item['args'])
+                )
+            elif item['type'] in ['class', 'import', 'variable']:
+                explanation = TEMPLATES[item['type']].format(name=item['name'])
+            else:
+                explanation = TEMPLATES[item['type']]
+
+            explanations.append(f"{indent_str}{explanation}")
+
+            # Handle nested structures
+            if 'body' in item and item['body']:
+                structure_type = 'function' if item['type'] == 'function' else \
+                                 'class' if item['type'] == 'class' else \
+                                 'loop' if item['type'] in ['for_loop', 'while_loop'] else \
+                                 'if statement'
+                explanations.append(f"{indent_str}Inside this {structure_type}:")
+                explanations.append(generate_explanation(item['body'], indent + 1))
+
+    return '\n'.join(explanations)
