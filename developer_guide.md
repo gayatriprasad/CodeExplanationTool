@@ -1,11 +1,23 @@
-# Code Explanation Tool - Developer Guide
+# Code Explanation Tool - Simplified Developer Guide
+
+## Project Overview
+This tool takes Python code as input and generates natural language explanations of the code's functionality.
 
 ## Project Structure
-- `src/`: Contains the main source code
-- `tests/`: Contains unit and integration tests
-- `data/`: Stores training data and model checkpoints
-- `docs/`: Contains user and developer documentation
-- `scripts/`: Utility scripts for training and evaluation
+```
+CodeExplanationTool/
+├── src/
+│   ├── __init__.py
+│   ├── code_parser.py
+│   ├── explanation_generator.py
+│   └── main.py
+├── tests/
+│   ├── test_code_parser.py
+│   └── test_explanation_generator.py
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
 
 ## Setting Up the Development Environment
 1. Clone the repository
@@ -15,17 +27,21 @@
    - macOS/Linux: `source venv/bin/activate`
 4. Install dependencies: `pip install -r requirements.txt`
 
+## Core Components
+1. `code_parser.py`: Handles input code and generates an Abstract Syntax Tree (AST)
+2. `explanation_generator.py`: Processes the AST and generates natural language explanations
+3. `main.py`: Orchestrates the overall process and handles user interaction
+
+## Running the Tool
+Execute `python src/main.py` and follow the prompts to input code and receive explanations.
+
 ## Running Tests
 Use pytest to run the test suite: `pytest tests/`
 
-## Training the ML Model
-Run the training script: `python scripts/train_model.py`
-
-## Evaluating the Model
-Run the evaluation script: `python scripts/evaluate_model.py`
-
 ## Contributing
-Please follow our coding standards and submit pull requests for any new features or bug fixes.
+Please follow PEP 8 style guidelines for Python code. Submit pull requests for any new features or bug fixes.
 
-## Deployment
-Instructions for deploying the tool to a production environment will be provided here.
+## Next Steps
+- Implement basic code parsing using Python's `ast` module
+- Develop simple explanation templates for common code structures
+- Create a basic command-line interface for user interaction
