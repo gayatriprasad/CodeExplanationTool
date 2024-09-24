@@ -1,5 +1,5 @@
 import pytest
-from src.input_handler import validate_python_code, preprocess_code, parse_code
+from code_explanation.input_handler import validate_python_code, preprocess_code, parse_code
 
 def test_validate_python_code():
     assert validate_python_code("print('Hello, World!')") == True

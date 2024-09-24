@@ -1,7 +1,7 @@
 import pytest
-from src.main import explain_code
-from src.ml_model import CodeExplanationModel
-from src.feedback_handler import FeedbackHandler
+from code_explanation.main import explain_code
+from code_explanation.ml_model import CodeExplanationModel
+from code_explanation.feedback_handler import FeedbackHandler
 
 
 def test_ml_model_integration():

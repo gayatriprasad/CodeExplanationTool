@@ -1,3 +1,6 @@
+"""
+This module processes text using Natural Language Processing techniques.
+"""
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.tag import pos_tag
@@ -9,16 +12,12 @@ nltk.download('averaged_perceptron_tagger', quiet=True)
 def process_text(text: str) -> str:
     """
     Process the input text by tokenizing, POS tagging, and applying simple capitalization rules.
-
+    
     Args:
         text (str): The input text to be processed.
-
+    
     Returns:
         str: The processed text with proper capitalization.
-
-    Example:
-        >>> process_text("hello world. how are you?")
-        "Hello world. How are you?"
     """
     # Tokenize the input text
     tokens = word_tokenize(text)
@@ -39,7 +38,6 @@ def process_text(text: str) -> str:
     
     # Join the processed tokens back into a string
     return ' '.join(processed_tokens)
-
 
 if __name__ == "__main__":
     sample_text = "hello world. how are you? this is a test."
