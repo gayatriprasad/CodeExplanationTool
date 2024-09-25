@@ -1,4 +1,4 @@
-from src.explanation_generator import generate_explanation
+from code_explanation.explanation_generator import generate_explanation
 
 def test_generate_explanation():
     analysis = {

@@ -1,5 +1,5 @@
 import ast
-from src.ast_analyzer import analyze_ast
+from code_explanation.ast_analyzer import analyze_ast
 
 def test_analyze_ast():
     code = """

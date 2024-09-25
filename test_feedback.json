@@ -4,5 +4,11 @@
     "explanation": "This code defines a function that prints 'Hello'",
     "rating": 5,
     "comment": "Clear explanation"
+  },
+  {
+    "code": "def greet(): print('Hello')",
+    "explanation": "This code defines a function that prints 'Hello'",
+    "rating": 5,
+    "comment": "Clear explanation"
   }
 ]
